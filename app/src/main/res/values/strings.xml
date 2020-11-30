@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">GoChat</string>
+    <string name="photo">foto</string>
+    <string name="reg">cadastrar</string>
 </resources>
