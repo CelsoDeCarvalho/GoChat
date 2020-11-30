@@ -1,5 +1,6 @@
 package com.sidratech.gochat;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,9 +18,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
+import java.util.UUID;
 
 public class TelaNovoUsuario extends AppCompatActivity {
 
@@ -61,13 +71,37 @@ public class TelaNovoUsuario extends AppCompatActivity {
     }
 
     private void newUser(){
+        String nome=name.getText().toString();
         String e_mail=email.getText().toString();
         String pass=password.getText().toString();
 
-        if(e_mail.isEmpty() || e_mail==null ||pass==null || pass.isEmpty()){
-            Toast.makeText(this,"Senha e email nao podem estar vazios",Toast.LENGTH_SHORT).show();
-        }else
-            FirebaseAuth.getInstance().createUserWithEmailAndPassword(e_mail,pass);
+        if(nome==null || nome.isEmpty() || e_mail.isEmpty() || e_mail==null ||pass==null || pass.isEmpty()){
+            Toast.makeText(this,"Nome, Senha e email nao podem estar vazios",Toast.LENGTH_SHORT).show();
+        }
+
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(e_mail,pass)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            Log.i("Teste",task.getResult().getUser().getUid());
+                            saveUserInFireBase();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.i("Teste",e.getMessage());
+                    }
+                });
+
+    }
+
+    private void saveUserInFireBase(){
+        String filename= UUID.randomUUID().toString();
+        final StorageReference ref = FirebaseStorage.getInstance().getReference("/images/"+filename);
+        ref.putFile(foto_uri);
     }
 
     private void selectPhoto(){
