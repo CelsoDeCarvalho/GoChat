@@ -46,9 +46,8 @@ public class TelaNovoUsuario extends AppCompatActivity {
 
         if(e_mail.isEmpty() || e_mail==null ||pass==null || pass.isEmpty()){
             Toast.makeText(this,"Senha e email nao podem estar vazios",Toast.LENGTH_SHORT).show();
-        }
-
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(e_mail,pass);
+        }else
+            FirebaseAuth.getInstance().createUserWithEmailAndPassword(e_mail,pass);
     }
 
 }
