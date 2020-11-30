@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cor_fundo"
+    tools:context=".TelaNovoUsuario">
+
+
+    <EditText
+        android:id="@+id/edit_txtUser"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:ems="10"
+        android:hint="username"
+        android:paddingLeft="8dp"
+        android:background="@drawable/texte_field_design"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <EditText
+        android:id="@+id/edi_email"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:background="@drawable/texte_field_design"
+        android:hint="email"
+        android:paddingLeft="8dp"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="@id/edit_txtUser"
+        app:layout_constraintStart_toStartOf="@id/edit_txtUser"
+        app:layout_constraintTop_toBottomOf="@id/edit_txtUser"
+        />
+
+    <EditText
+        android:id="@+id/edit_password"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:background="@drawable/texte_field_design"
+        android:hint="password"
+        android:paddingLeft="8dp"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@id/edi_email"
+        app:layout_constraintStart_toStartOf="@id/edi_email"
+        app:layout_constraintTop_toBottomOf="@id/edi_email"
+        />
+
+    <Button
+        android:id="@+id/btnReg"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/button_design"
+        android:text="cadastrar"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="@id/edit_password"
+        app:layout_constraintStart_toStartOf="@id/edit_password"
+        app:layout_constraintTop_toBottomOf="@id/edit_password"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
