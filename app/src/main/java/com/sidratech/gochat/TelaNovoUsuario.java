@@ -21,11 +21,13 @@ import android.widget.Toast;
 import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -66,6 +68,7 @@ public class TelaNovoUsuario extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 selectPhoto();
+
             }
         });
     }
@@ -77,31 +80,41 @@ public class TelaNovoUsuario extends AppCompatActivity {
 
         if(nome==null || nome.isEmpty() || e_mail.isEmpty() || e_mail==null ||pass==null || pass.isEmpty()){
             Toast.makeText(this,"Nome, Senha e email nao podem estar vazios",Toast.LENGTH_SHORT).show();
+            return;
         }
 
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(e_mail,pass)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Log.i("Teste",task.getResult().getUser().getUid());
-                            saveUserInFireBase();
-                        }
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        Log.i("Teste",task.getResult().getUser().getUid());
+                        saveUserInFireBase();
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.i("Teste",e.getMessage());
-                    }
-                });
-
+                .addOnFailureListener(e -> Log.i("Teste",e.getMessage()));
     }
 
     private void saveUserInFireBase(){
         String filename= UUID.randomUUID().toString();
         final StorageReference ref = FirebaseStorage.getInstance().getReference("/images/"+filename);
-        ref.putFile(foto_uri);
+        ref.putFile(foto_uri)
+                .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                Log.i("Teste",foto_uri.toString());
+                            }
+                        });
+                    }
+                })
+
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.i("Teste",e.getMessage(),e);
+                    }
+                });
     }
 
     private void selectPhoto(){
@@ -126,4 +139,5 @@ public class TelaNovoUsuario extends AppCompatActivity {
             }
         }
     }
+
 }

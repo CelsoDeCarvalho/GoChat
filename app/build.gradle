@@ -38,7 +38,6 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     implementation 'com.google.firebase:firebase-auth'
     implementation "de.hdodenhof:circleimageview:2.2.0"
-    implementation "com.google.firebase:firebase-store:16.0.1"
     implementation 'com.google.firebase:firebase-storage'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
